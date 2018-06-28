@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "631340142411",
+    "firebase_url": "https://ecommerceft.firebaseio.com",
+    "project_id": "ecommerceft",
+    "storage_bucket": "ecommerceft.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631340142411:android:ae3bd3cd9d23dd21",
+        "android_client_info": {
+          "package_name": "com.test.ecommerceft"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631340142411-k3t6ifkl21cvq2scl0mcvt36kdp3j9q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.test.ecommerceft",
+            "certificate_hash": "faed94229f30e76e42d26eb38ee1969e3caded89"
+          }
+        },
+        {
+          "client_id": "631340142411-nrofn45ube85i89v3oq347mem4ff8see.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2vdUxfqpCVpzhB8aKvG2FoJYNTda88Vs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631340142411-nrofn45ube85i89v3oq347mem4ff8see.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
