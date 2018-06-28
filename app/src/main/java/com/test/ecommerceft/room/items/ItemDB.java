@@ -1,4 +1,4 @@
-package com.test.ecommerceft.room;
+package com.test.ecommerceft.room.items;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;

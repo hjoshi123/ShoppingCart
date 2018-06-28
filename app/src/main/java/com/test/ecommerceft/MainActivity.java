@@ -6,19 +6,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.test.ecommerceft.room.Item;
-import com.test.ecommerceft.room.ItemDB;
+import com.test.ecommerceft.room.items.Item;
+import com.test.ecommerceft.room.items.ItemDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Item> mList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private List<Item> selected = new ArrayList<>();
+    private String mPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setTitle("Home");
-
+        Bundle bundle = getIntent().getExtras();
+        mPhoneNumber = bundle.getString("phone");
+        Log.d("MainAc", mPhoneNumber);
         mRecyclerView = findViewById(R.id.products_list);
 
         mItemDB = Room.databaseBuilder(getApplicationContext(), ItemDB.class, "sample").build();
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle b = new Bundle();
             b.putParcelableArrayList("cart", item1);
             intent.putExtras(b);
+            intent.putExtra("phone", mPhoneNumber);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -154,27 +159,19 @@ public class MainActivity extends AppCompatActivity {
             holder.quantity.setText(itm.getVariant());
             holder.count.setText(String.valueOf(itm.getCount()));
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (selected.contains(itm)) {
-                        selected.remove(itm);
-                        unhighlightView(holder);
-                    } else {
-                        selected.add(itm);
-                        highlightView(holder);
-                    }
-                }
+            holder.add.setOnClickListener((v) -> {
+                itm.setCount(itm.getCount() + 1);
+                holder.count.setText(String.valueOf(itm.getCount()));
+                if (!selected.contains(itm))
+                    selected.add(itm);
+            });
 
-                private void highlightView(ViewHolder holder) {
-                    holder.itemView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),
-                            android.R.color.holo_green_light));
-                }
-
-                private void unhighlightView(ViewHolder holder) {
-                    holder.itemView.setBackgroundColor
-                            (ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
-                }
+            holder.remove.setOnClickListener(v -> {
+                if (!(itm.getCount() <= 0))
+                    itm.setCount(itm.getCount() - 1);
+                holder.count.setText(String.valueOf(itm.getCount()));
+                if (itm.getCount() == 0)
+                    selected.remove(itm);
             });
         }
 
@@ -185,12 +182,16 @@ public class MainActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             private TextView name, price, quantity, count;
+            private ImageView add, remove;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 name = itemView.findViewById(R.id.from_name);
                 price = itemView.findViewById(R.id.price_text);
                 quantity = itemView.findViewById(R.id.weight_text);
                 count = itemView.findViewById(R.id.cart_product_quantity_tv);
+                add = itemView.findViewById(R.id.cart_plus_img);
+                remove = itemView.findViewById(R.id.cart_minus_img);
             }
         }
     }
