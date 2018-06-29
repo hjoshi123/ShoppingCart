@@ -1,9 +1,12 @@
 package com.test.ecommerceft;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.test.ecommerceft.room.cart.Cart;
 import com.test.ecommerceft.room.cart.CartDB;
@@ -24,10 +28,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class CartActivity extends AppCompatActivity {
-    private static ArrayList<Item> items;
+    private ArrayList<Item> items;
     private RecyclerView mRecyclerView;
-    private static String mPhoneNumber;
-    private static CartDB mCartDb;
+    private String mPhoneNumber;
+    private CartDB mCartDb;
+    private TextView mPriceText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +43,19 @@ public class CartActivity extends AppCompatActivity {
         mPhoneNumber = Objects.requireNonNull(this.getIntent().getExtras().getString("phone"));
 
         mRecyclerView = findViewById(R.id.cart_list);
+        mPriceText = findViewById(R.id.price);
         mCartDb = Room.databaseBuilder(getApplicationContext(), CartDB.class, "sample-db").build();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ItemsAdapter adapter = new ItemsAdapter(items);
         mRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        int price = 0;
+        for (Item i : items) {
+            price += i.getPrice() * i.getCount();
+        }
+        mPriceText.setText("₹ " + String.valueOf(price));
     }
 
     @Override
@@ -57,13 +69,26 @@ public class CartActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.done) {
-            new InsertCartItem().execute();
+            if (items.size() == 0) {
+                Toast.makeText(this, "Add some items to checkout", Toast.LENGTH_SHORT).show();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to checkout?")
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                            new InsertCartItem().execute();
+                        })
+                        .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                            dialog.cancel();
+                        })
+                        .show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private static class InsertCartItem extends AsyncTask<Void, Void, Void> {
+    @SuppressLint("StaticFieldLeak")
+    private class InsertCartItem extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -79,6 +104,13 @@ public class CartActivity extends AppCompatActivity {
                 mCartDb.getCartDao().insert(c);
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(CartActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+            CartActivity.this.finish();
         }
     }
 
@@ -127,12 +159,12 @@ public class CartActivity extends AppCompatActivity {
             return item.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             private TextView name, price, quantity, count;
             private ImageView add, remove;
 
 
-            public ViewHolder(View itemView) {
+            ViewHolder(View itemView) {
                 super(itemView);
                 name = itemView.findViewById(R.id.from_name);
                 price = itemView.findViewById(R.id.price_text);

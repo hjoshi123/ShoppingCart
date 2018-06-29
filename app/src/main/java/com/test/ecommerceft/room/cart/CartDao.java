@@ -11,6 +11,6 @@ public interface CartDao {
     @Insert
     void insert(Cart... cart);
 
-    @Query("SELECT * FROM Cart")
-    List<Cart> getAllItems();
+    @Query("SELECT * FROM Cart WHERE phoneNumber LIKE :phoneNumber")
+    List<Cart> getAllItems(String phoneNumber);
 }

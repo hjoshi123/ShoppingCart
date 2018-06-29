@@ -10,10 +10,9 @@
     android:paddingRight="5dp">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:orientation="horizontal"
         android:padding="10dp" >
 
         <LinearLayout
@@ -55,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginStart="60dip"
+                android:layout_marginStart="60dp"
                 android:layout_weight="0.23"
                 android:paddingEnd="5dp"
                 android:text="Rs. 200"

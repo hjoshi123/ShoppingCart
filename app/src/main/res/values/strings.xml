@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EcommerceFT</string>
+
+    <string name="price_condition">* Prices are bound to change according to time</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="your_previous_orders">Your Previous Orders</string>
+    <string name="place_your_order">Place your order</string>
 </resources>
