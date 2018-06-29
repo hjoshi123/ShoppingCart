@@ -12,7 +12,7 @@ Features:
 
 ## License
 
-This project is licensed under the GNU LGPL - see the [LICENSE](https://github.com/adigupta13/TRTLMiningPoolObserver/blob/master/LICENSE.md) file for details
+This project is licensed under the GNU LGPL - see the [LICENSE](https://github.com/hjoshi123/ShoppingCart/blob/master/LICENSE) file for details
 
 ## Acknowledgments
 
